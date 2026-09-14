@@ -164,12 +164,10 @@ const relativeTime =
 const customTimeFields =
   document.getElementById("customTimeFields");
 
-const startTime =
-  document.getElementById("startTime");
-
-const stopTime =
-  document.getElementById("stopTime");
-
+const startDate = document.getElementById("startDate");
+const startClock = document.getElementById("startClock");
+const stopDate = document.getElementById("stopDate");
+const stopClock = document.getElementById("stopClock");
 
 const customModeButton =
   document.getElementById("customModeButton");
@@ -264,11 +262,10 @@ function createDefaultQuery(id) {
     relativeTime:
       "-1h",
 
-    startTime:
-      "",
-
-    stopTime:
-      "",
+    startDate: "",
+    startClock: "",
+    stopDate: "",
+    stopClock: "",
 
     aggregationMode:
       "custom",
@@ -721,12 +718,13 @@ function saveCurrentUIState() {
   query.relativeTime =
     relativeTime.value;
 
-  query.startTime =
-    startTime.value;
-
-  query.stopTime =
-    stopTime.value;
-
+  query.startDate = startDate.value;
+  
+  query.startClock = startClock.value;
+  
+  query.stopDate = stopDate.value;
+  
+  query.stopClock = stopClock.value;
 
   query.aggregationFunction =
     aggregationFunction.value;
@@ -769,12 +767,10 @@ function render() {
     query.relativeTime;
 
 
-  startTime.value =
-    query.startTime;
-
-  stopTime.value =
-    query.stopTime;
-
+  startDate.value = query.startDate;
+  startClock.value = query.startClock;
+  stopDate.value = query.stopDate;
+  stopClock.value = query.stopClock;
 
   if (
     query.timeMode ===
@@ -905,15 +901,22 @@ function buildFluxQuery() {
 
 
   if (
-    query.timeMode ===
-    "custom" &&
-    query.startTime &&
-    query.stopTime
-  ) {
+  query.timeMode === "custom" &&
+  query.startDate &&
+  query.startClock &&
+  query.stopDate &&
+  query.stopClock
+) {
 
+    const startISO = new Date(
+  `${query.startDate}T${query.startClock}`
+).toISOString();
+    const stopISO = new Date(
+      `${query.stopDate}T${query.stopClock}`
+    ).toISOString();
+    
     rangeClause =
-      `|> range(start: time(v: "${new Date(query.startTime).toISOString()}"), stop: time(v: "${new Date(query.stopTime).toISOString()}"))`;
-
+      `|> range(start: time(v: "${startISO}"), stop: time(v: "${stopISO}"))`;
   }
 
   else {
