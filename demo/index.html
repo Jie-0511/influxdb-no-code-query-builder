@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>InfluxDB No-Code Query Builder</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="container">
+
+    <header>
+      <h1>InfluxDB No-Code Query Builder</h1>
+
+      <p>
+        Interactive portfolio demo of the Query Builder and
+        Flux Query Generation functionality.
+      </p>
+
+      <div class="notice">
+        Demo Mode — This version uses sample data and does not connect
+        to the original university system or InfluxDB instance.
+      </div>
+    </header>
+
+
+    <section class="builder">
+
+      <h2>Build Your Query</h2>
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="bucket">Bucket</label>
+          <select id="bucket">
+            <option value="demo-bucket">demo-bucket</option>
+            <option value="sensor-data">sensor-data</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="measurement">Measurement</label>
+          <select id="measurement">
+            <option value="cpu">cpu</option>
+            <option value="temperature">temperature</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="field">Field</label>
+          <select id="field">
+            <option value="usage">usage</option>
+            <option value="value">value</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="tagKey">Tag Key</label>
+          <select id="tagKey">
+            <option value="host">host</option>
+            <option value="location">location</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="tagValue">Tag Value</label>
+          <select id="tagValue">
+            <option value="server-01">server-01</option>
+            <option value="server-02">server-02</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="aggregation">Aggregation</label>
+          <select id="aggregation">
+            <option value="mean">mean</option>
+            <option value="max">max</option>
+            <option value="min">min</option>
+            <option value="sum">sum</option>
+          </select>
+        </div>
+
+
+        <div class="field">
+          <label for="timeRange">Time Range</label>
+          <select id="timeRange">
+            <option value="-1h">Last 1 hour</option>
+            <option value="-6h">Last 6 hours</option>
+            <option value="-24h">Last 24 hours</option>
+            <option value="-7d">Last 7 days</option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <button id="generateButton">
+        Generate Query
+      </button>
+
+    </section>
+
+
+    <section class="output">
+
+      <div class="output-header">
+        <h2>Generated Flux Query</h2>
+
+        <button id="copyButton">
+          Copy Query
+        </button>
+      </div>
+
+      <pre><code id="queryOutput">Select your query options and click "Generate Query".</code></pre>
+
+    </section>
+
+
+    <footer>
+      <p>
+        Portfolio demonstration based on my contribution to a
+        university industry project.
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
