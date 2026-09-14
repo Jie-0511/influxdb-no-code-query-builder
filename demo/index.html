@@ -77,23 +77,23 @@
 
 
             <div id="customTimeFields" class="custom-time hidden">
-
-              <input
-                id="startTime"
-                type="datetime-local"
-              />
-
+              <div class="date-time-group">
+                <label>Start</label>
+                <input id="startDate" type="date" lang="en" />
+                <input id="startClock" type="time" lang="en" />
+              </div>
+              
               <span>to</span>
-
-              <input
-                id="stopTime"
-                type="datetime-local"
-              />
-
+              
+              <div class="date-time-group">
+                <label>End</label>
+                <input id="stopDate" type="date" lang="en" />
+                <input id="stopClock" type="time" lang="en" />
+              </div>
+            
             </div>
-
+            
           </div>
-
 
           <button id="csvButton" class="secondary-button">
             CSV
