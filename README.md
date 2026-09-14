@@ -84,6 +84,25 @@ The selected query parameters are converted into Flux query syntax automatically
 
 ![Generated Flux Query](screenshots/query-generation.png)
 
+## 💻 Selected Code Samples
+
+This portfolio repository includes selected code related to my individual contribution to the frontend Query Builder and Query Generation functionality.
+
+### Query Builder
+[`QueryBuilder.vue`](src/components/QueryBuilder.vue)
+
+Implements the main Query Builder interface, including query tabs, time-range selection, aggregation configuration, and query generation actions.
+
+### Flux Query Generation
+[`queryBuilder.js`](src/stores/queryBuilder.js)
+
+Contains the Pinia state management and dynamic Flux query generation logic that converts user-selected buckets, measurements, fields, tags, time ranges, and aggregation functions into an executable Flux query.
+
+### Query Preview
+[`QueryPreview.vue`](src/components/QueryPreview.vue)
+
+Displays the generated Flux query and supports copying and editing the generated query.
+
 ## 🎓 What I Learned
 
 Through this project, I gained practical experience in:
