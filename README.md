@@ -70,7 +70,19 @@ For example, users can select measurements, fields, tags, and query options thro
 
 ## 📸 Screenshots
 
-Screenshots demonstrating the Query Builder and Query Generation functionality will be added here.
+### Visual Query Builder
+
+The interface allows users to select query parameters such as bucket, measurement, field, tags, aggregation options, and time range through a visual workflow.
+
+My main contribution focused on the Query Builder interaction and the logic used to transform user selections into generated Flux queries.
+
+![Visual Query Builder](screenshots/query-builder.png)
+
+### Query Generation
+
+The selected query parameters are converted into Flux query syntax automatically, allowing users to create queries without manually writing Flux.
+
+![Generated Flux Query](screenshots/query-generation.png)
 
 ## 🎓 What I Learned
 
