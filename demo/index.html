@@ -13,93 +13,183 @@
 
   <div class="app-shell">
 
-    <!-- Top Bar -->
+    <!-- Header -->
     <header class="topbar">
+
       <div class="brand">
         <span class="brand-dot"></span>
         <span>InfluxDB Workbench</span>
       </div>
 
       <div class="topbar-right">
-        <span class="status-text">Demo Mode</span>
+        <span class="status-text">Portfolio Demo</span>
         <div class="avatar">V</div>
       </div>
+
     </header>
 
 
     <main class="workspace">
 
-      <!-- Demo Notice -->
+      <!-- Demo notice -->
       <section class="demo-notice">
-        <strong>Portfolio Demo</strong>
+
+        <strong>Demo Mode</strong>
+
         <span>
-          This interactive version uses mock data and does not connect
+          This interactive portfolio version uses mock data and does not connect
           to the original university InfluxDB or Grafana environment.
         </span>
+
       </section>
 
 
       <!-- Query Builder -->
       <section class="panel query-builder-panel">
 
-        <!-- Query Tabs -->
+        <!-- Query tabs -->
         <div class="query-toolbar">
 
           <div id="queryTabs" class="query-tabs"></div>
 
-          <button id="addQueryButton" class="text-button">
+          <button
+            id="addQueryButton"
+            class="text-button"
+          >
             + Add Query
           </button>
 
         </div>
 
 
-        <!-- Time / Export -->
+        <!-- Time controls -->
         <div class="top-controls">
 
           <div class="time-controls">
 
-            <label>Time</label>
+            <label for="timeMode">
+              Time
+            </label>
 
             <select id="timeMode">
-              <option value="relative">Relative Time</option>
-              <option value="custom">Custom Time Range</option>
+
+              <option value="relative">
+                Relative Time
+              </option>
+
+              <option value="custom">
+                Custom Time Range
+              </option>
+
             </select>
 
 
+            <!-- Relative Time -->
             <select id="relativeTime">
-              <option value="-15m">Last 15 minutes</option>
-              <option value="-1h" selected>Last 1 hour</option>
-              <option value="-6h">Last 6 hours</option>
-              <option value="-24h">Last 24 hours</option>
-              <option value="-7d">Last 7 days</option>
+
+              <option value="-15m">
+                Last 15 minutes
+              </option>
+
+              <option value="-1h" selected>
+                Last 1 hour
+              </option>
+
+              <option value="-6h">
+                Last 6 hours
+              </option>
+
+              <option value="-24h">
+                Last 24 hours
+              </option>
+
+              <option value="-7d">
+                Last 7 days
+              </option>
+
             </select>
 
 
-            <div id="customTimeFields" class="custom-time hidden">
+            <!-- Custom Time -->
+            <div
+              id="customTimeFields"
+              class="custom-time hidden"
+            >
 
-              <input
-                id="startTime"
-                type="datetime-local"
-              />
+              <div class="date-time-group">
 
-              <span>to</span>
+                <span class="date-label">
+                  Start
+                </span>
 
-              <input
-                id="stopTime"
-                type="datetime-local"
-              />
+                <input
+                  id="startDate"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  maxlength="10"
+                  autocomplete="off"
+                />
+
+                <input
+                  id="startClock"
+                  type="text"
+                  placeholder="HH:MM"
+                  maxlength="5"
+                  autocomplete="off"
+                />
+
+              </div>
+
+
+              <span class="to-label">
+                to
+              </span>
+
+
+              <div class="date-time-group">
+
+                <span class="date-label">
+                  End
+                </span>
+
+                <input
+                  id="stopDate"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  maxlength="10"
+                  autocomplete="off"
+                />
+
+                <input
+                  id="stopClock"
+                  type="text"
+                  placeholder="HH:MM"
+                  maxlength="5"
+                  autocomplete="off"
+                />
+
+              </div>
 
             </div>
 
           </div>
 
 
-          <button id="csvButton" class="secondary-button">
+          <button
+            id="csvButton"
+            class="secondary-button"
+          >
             CSV
           </button>
 
         </div>
+
+
+        <!-- Validation message -->
+        <div
+          id="validationMessage"
+          class="validation-message hidden"
+        ></div>
 
 
         <!-- Aggregation -->
@@ -129,42 +219,82 @@
           </div>
 
 
-          <div id="aggregationContainer" class="aggregation-container">
+          <div
+            id="aggregationContainer"
+            class="aggregation-container"
+          >
 
             <select id="aggregationFunction">
-              <option value="mean">mean</option>
-              <option value="sum">sum</option>
-              <option value="max">max</option>
-              <option value="min">min</option>
-              <option value="count">count</option>
-              <option value="median">median</option>
+
+              <option value="mean">
+                mean
+              </option>
+
+              <option value="sum">
+                sum
+              </option>
+
+              <option value="max">
+                max
+              </option>
+
+              <option value="min">
+                min
+              </option>
+
+              <option value="count">
+                count
+              </option>
+
+              <option value="median">
+                median
+              </option>
+
             </select>
 
 
             <select id="aggregationInterval">
-              <option value="1m">1 minute</option>
-              <option value="5m" selected>5 minutes</option>
-              <option value="15m">15 minutes</option>
-              <option value="1h">1 hour</option>
+
+              <option value="1m">
+                1 minute
+              </option>
+
+              <option value="5m" selected>
+                5 minutes
+              </option>
+
+              <option value="15m">
+                15 minutes
+              </option>
+
+              <option value="1h">
+                1 hour
+              </option>
+
             </select>
 
           </div>
 
 
-          <button id="generateButton" class="primary-button">
+          <button
+            id="generateButton"
+            class="primary-button"
+          >
             Generate Current Query
           </button>
 
         </div>
 
 
-        <!-- Query Columns -->
+        <!-- Query selections -->
         <div class="query-grid">
 
           <!-- Bucket -->
           <div class="query-card">
 
-            <span class="card-type">FROM</span>
+            <span class="card-type">
+              FROM
+            </span>
 
             <label for="bucket">
               Bucket
@@ -178,7 +308,9 @@
           <!-- Measurement -->
           <div class="query-card">
 
-            <span class="card-type">FILTER</span>
+            <span class="card-type">
+              FILTER
+            </span>
 
             <label for="measurement">
               Measurement
@@ -192,7 +324,9 @@
           <!-- Field -->
           <div class="query-card">
 
-            <span class="card-type">FILTER</span>
+            <span class="card-type">
+              FILTER
+            </span>
 
             <label for="field">
               Field
@@ -206,7 +340,9 @@
           <!-- Tag Key -->
           <div class="query-card">
 
-            <span class="card-type">FILTER</span>
+            <span class="card-type">
+              FILTER
+            </span>
 
             <label for="tagKey">
               Tag Key
@@ -220,7 +356,9 @@
           <!-- Tag Value -->
           <div class="query-card">
 
-            <span class="card-type">FILTER</span>
+            <span class="card-type">
+              FILTER
+            </span>
 
             <label for="tagValue">
               Tag Value
@@ -241,17 +379,25 @@
 
         <div class="section-header">
 
-          <h2>Generated Query</h2>
+          <h2>
+            Generated Query
+          </h2>
 
           <div class="section-actions">
 
-            <button id="copyButton" class="link-button">
+            <button
+              id="copyButton"
+              class="link-button"
+            >
               Copy
             </button>
 
             <span>•</span>
 
-            <button id="openEditorButton" class="link-button">
+            <button
+              id="openEditorButton"
+              class="link-button"
+            >
               Open in Editor →
             </button>
 
@@ -267,23 +413,38 @@
 
 
       <!-- Query Editor -->
-      <section id="editorPanel" class="panel hidden">
+      <section
+        id="editorPanel"
+        class="panel hidden"
+      >
 
         <div class="section-header">
 
-          <h2>Query Editor</h2>
+          <h2>
+            Query Editor
+          </h2>
 
-          <button id="closeEditorButton" class="link-button">
+          <button
+            id="closeEditorButton"
+            class="link-button"
+          >
             Close
           </button>
 
         </div>
+
+
+        <p class="section-description">
+          You can manually edit the generated Flux query for demonstration purposes.
+        </p>
+
 
         <textarea
           id="queryEditor"
           class="query-editor"
           spellcheck="false"
         ></textarea>
+
 
         <div class="editor-actions">
 
@@ -299,75 +460,31 @@
       </section>
 
 
+      <!-- About Demo -->
+      <section class="panel demo-information">
 
-      <!-- User Defined Hierarchy -->
-      <section class="panel">
+        <h2>
+          About This Demo
+        </h2>
 
-        <div class="section-header">
+        <p>
+          This lightweight interactive demo was recreated for portfolio purposes
+          based on my contribution to the frontend Query Builder and dynamic Flux
+          Query Generation functionality in a university industry project.
+        </p>
 
-          <div>
-            <h2>User-defined Hierarchy</h2>
-
-            <p class="section-description">
-              Build a simple hierarchy for organising tag relationships.
-            </p>
-          </div>
-
-          <button
-            id="resetHierarchyButton"
-            class="secondary-button"
-          >
-            Reset
-          </button>
-
-        </div>
-
-
-        <div class="hierarchy-layout">
-
-          <div>
-
-            <label for="hierarchyTagKey">
-              Tag Key
-            </label>
-
-            <select id="hierarchyTagKey"></select>
-
-
-            <label for="hierarchyTagValue">
-              Tag Value
-            </label>
-
-            <select id="hierarchyTagValue"></select>
-
-
-            <button
-              id="addHierarchyButton"
-              class="primary-button hierarchy-add"
-            >
-              Add to Hierarchy
-            </button>
-
-          </div>
-
-
-          <div class="hierarchy-preview">
-
-            <h3>Hierarchy Preview</h3>
-
-            <div id="hierarchyTree"></div>
-
-          </div>
-
-        </div>
+        <p>
+          It uses sample data so that the interaction can be demonstrated safely
+          without exposing the original internal project environment, credentials,
+          or university infrastructure.
+        </p>
 
       </section>
 
 
       <footer>
 
-        Portfolio demonstration of the Query Builder and Flux Query Generation
-        workflow developed from my university industry project experience.
+        Portfolio demonstration — Query Builder & Flux Query Generation
 
       </footer>
 
