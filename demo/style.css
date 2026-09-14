@@ -15,10 +15,16 @@
 
   --panel: #ffffff;
   --code: #101827;
+
+  --warning-bg: #fff5f3;
+  --warning-border: #f5bbb3;
+  --warning-text: #a53d32;
 }
+
 
 body {
   margin: 0;
+
   font-family:
     Inter,
     -apple-system,
@@ -28,54 +34,72 @@ body {
     sans-serif;
 
   background: var(--background);
+
   color: var(--text);
 }
 
 
 /* =========================
-   Layout
+   Main layout
 ========================= */
 
 .app-shell {
   min-height: 100vh;
 }
 
+
 .workspace {
   max-width: 1240px;
+
   margin: 0 auto;
-  padding: 40px 22px 70px;
+
+  padding:
+    40px
+    22px
+    70px;
 }
 
 
 /* =========================
-   Top Bar
+   Header
 ========================= */
 
 .topbar {
   height: 64px;
 
+  padding:
+    0
+    28px;
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
-  padding: 0 28px;
-
   background: white;
-  border-bottom: 1px solid #e9edf4;
+
+  border-bottom:
+    1px solid #e9edf4;
 }
+
 
 .brand {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
 
-  font-weight: 700;
   font-size: 18px;
+
+  font-weight: 700;
 }
+
 
 .brand-dot {
   width: 12px;
+
   height: 12px;
 
   border-radius: 50%;
@@ -86,54 +110,68 @@ body {
     0 0 0 4px #e8efff;
 }
 
+
 .topbar-right {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
 }
 
+
 .status-text {
   color: var(--muted);
+
   font-size: 14px;
 }
 
+
 .avatar {
   width: 34px;
+
   height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
 
   border-radius: 50%;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   color: white;
 
-  background: linear-gradient(
-    135deg,
-    #6b8df7,
-    #3465db
-  );
+  background:
+    linear-gradient(
+      135deg,
+      #6b8df7,
+      #3465db
+    );
 }
 
 
 /* =========================
-   Demo Notice
+   Demo notice
 ========================= */
 
 .demo-notice {
   margin-bottom: 20px;
 
-  padding: 14px 18px;
+  padding:
+    14px
+    18px;
 
   border-radius: 10px;
 
-  background: #fff9e8;
+  border:
+    1px solid #f2df9f;
 
-  border: 1px solid #f2df9f;
+  background: #fff9e8;
 
   font-size: 14px;
 }
+
 
 .demo-notice strong {
   margin-right: 8px;
@@ -141,7 +179,7 @@ body {
 
 
 /* =========================
-   General Panels
+   Panels
 ========================= */
 
 .panel {
@@ -149,15 +187,23 @@ body {
 
   padding: 24px;
 
-  background: var(--panel);
-
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
   border-radius: 14px;
 
+  background: var(--panel);
+
   box-shadow:
-    0 4px 15px rgba(16, 24, 40, 0.04);
+    0 4px 15px
+    rgba(
+      16,
+      24,
+      40,
+      0.04
+    );
 }
+
 
 .query-builder-panel {
   padding-bottom: 28px;
@@ -170,6 +216,7 @@ body {
 
 .query-toolbar {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
@@ -177,24 +224,33 @@ body {
   margin-bottom: 20px;
 }
 
+
 .query-tabs {
   display: flex;
+
+  flex-wrap: wrap;
+
   align-items: center;
 
   gap: 8px;
 }
 
+
 .query-tab {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
 
-  padding: 9px 14px;
+  padding:
+    9px
+    14px;
+
+  border:
+    1px solid var(--border);
 
   border-radius: 9px;
-
-  border: 1px solid var(--border);
 
   background: #f7f9fc;
 
@@ -202,6 +258,7 @@ body {
 
   font-size: 14px;
 }
+
 
 .query-tab.active {
   color: #2456c6;
@@ -211,26 +268,29 @@ body {
   background: #edf3ff;
 }
 
-.query-remove {
-  border: none;
-  background: none;
 
-  cursor: pointer;
+.query-remove {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
 
   color: #99a2b0;
 
-  padding: 0;
+  cursor: pointer;
 
   font-size: 16px;
 }
 
 
 /* =========================
-   Controls
+   Top controls
 ========================= */
 
 .top-controls {
   display: flex;
+
   justify-content: space-between;
 
   gap: 20px;
@@ -238,18 +298,26 @@ body {
   margin-bottom: 18px;
 }
 
+
 .time-controls {
   display: flex;
+
+  flex-wrap: wrap;
+
   align-items: center;
 
   gap: 10px;
-
-  flex-wrap: wrap;
 }
 
-.time-controls label {
+
+.time-controls > label {
   font-weight: 600;
 }
+
+
+/* =========================
+   Form controls
+========================= */
 
 select,
 input,
@@ -257,31 +325,106 @@ textarea {
   font: inherit;
 }
 
+
 select,
-input[type="datetime-local"] {
-  padding: 10px 12px;
+input[type="text"] {
+  padding:
+    10px
+    12px;
+
+  border:
+    1px solid #d5dce7;
 
   border-radius: 8px;
-
-  border: 1px solid #d5dce7;
 
   background: white;
 
   color: var(--text);
 }
 
+
 select:focus,
 input:focus,
 textarea:focus {
-  outline: 2px solid #b9cbff;
+  outline:
+    2px solid #b9cbff;
+
   border-color: #8aaaff;
 }
 
+
 .custom-time {
   display: flex;
+
+  flex-wrap: wrap;
+
   align-items: center;
 
-  gap: 8px;
+  gap: 10px;
+}
+
+
+.date-time-group {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.date-label {
+  color: #667085;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.date-time-group input:first-of-type {
+  width: 130px;
+}
+
+
+.date-time-group input:last-of-type {
+  width: 85px;
+}
+
+
+.to-label {
+  color: #697586;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   Validation
+========================= */
+
+.validation-message {
+  margin:
+    -5px
+    0
+    18px;
+
+  padding:
+    10px
+    13px;
+
+  border:
+    1px solid var(--warning-border);
+
+  border-radius: 8px;
+
+  background: var(--warning-bg);
+
+  color: var(--warning-text);
+
+  font-size: 13px;
 }
 
 
@@ -291,65 +434,83 @@ textarea:focus {
 
 .aggregation-row {
   display: flex;
-  align-items: center;
 
   flex-wrap: wrap;
 
-  gap: 12px;
+  align-items: center;
 
-  padding: 14px;
+  gap: 12px;
 
   margin-bottom: 24px;
 
-  border-radius: 10px;
+  padding: 14px;
 
-  border: 1px solid #dce5f2;
+  border:
+    1px solid #dce5f2;
+
+  border-radius: 10px;
 
   background: #fbfcff;
 }
 
+
 .aggregation-title {
+  color: #5c667a;
+
   font-size: 12px;
 
   font-weight: 700;
-
-  color: #5c667a;
 }
+
 
 .mode-switch {
   display: flex;
 }
 
-.mode-button {
-  padding: 8px 13px;
 
-  border: 1px solid #cdd7e8;
+.mode-button {
+  padding:
+    8px
+    13px;
+
+  border:
+    1px solid #cdd7e8;
 
   background: white;
 
   cursor: pointer;
 }
 
+
 .mode-button:first-child {
-  border-radius: 8px 0 0 8px;
+  border-radius:
+    8px 0 0 8px;
 }
+
 
 .mode-button:last-child {
-  border-radius: 0 8px 8px 0;
+  border-radius:
+    0 8px 8px 0;
 }
+
 
 .mode-button.active {
+  border-color:
+    var(--blue);
+
+  background:
+    var(--blue);
+
   color: white;
-
-  background: var(--blue);
-
-  border-color: var(--blue);
 }
+
 
 .aggregation-container {
   display: flex;
+
   gap: 8px;
 }
+
 
 #generateButton {
   margin-left: auto;
@@ -364,10 +525,17 @@ textarea:focus {
   display: grid;
 
   grid-template-columns:
-    repeat(5, minmax(150px, 1fr));
+    repeat(
+      5,
+      minmax(
+        150px,
+        1fr
+      )
+    );
 
   gap: 14px;
 }
+
 
 .query-card {
   min-height: 145px;
@@ -375,36 +543,43 @@ textarea:focus {
   padding: 16px;
 
   display: flex;
+
   flex-direction: column;
+
+  border:
+    1px solid #dce5f2;
+
+  border-top:
+    3px solid #aac4ff;
 
   border-radius: 12px;
 
-  border: 1px solid #dce5f2;
-
   background: white;
-
-  border-top: 3px solid #aac4ff;
 }
+
 
 .card-type {
   width: max-content;
 
-  padding: 4px 7px;
-
   margin-bottom: 7px;
+
+  padding:
+    4px
+    7px;
 
   border-radius: 5px;
 
   background: #f1f4fa;
 
+  color: #657085;
+
   font-size: 10px;
 
   font-weight: 700;
 
-  color: #657085;
-
   letter-spacing: 0.8px;
 }
+
 
 .query-card label {
   margin-bottom: 7px;
@@ -423,53 +598,72 @@ button {
   font: inherit;
 }
 
+
 .primary-button {
-  padding: 10px 17px;
+  padding:
+    10px
+    17px;
 
   border: none;
 
   border-radius: 8px;
 
-  color: white;
+  background:
+    var(--blue);
 
-  background: var(--blue);
+  color: white;
 
   cursor: pointer;
 
   box-shadow:
-    0 4px 10px rgba(53, 106, 230, 0.2);
+    0 4px 10px
+    rgba(
+      53,
+      106,
+      230,
+      0.2
+    );
 }
+
 
 .primary-button:hover {
-  background: var(--blue-dark);
+  background:
+    var(--blue-dark);
 }
 
+
 .secondary-button {
-  padding: 9px 16px;
+  padding:
+    9px
+    16px;
+
+  border:
+    1px solid #d6deea;
 
   border-radius: 8px;
-
-  border: 1px solid #d6deea;
 
   background: white;
 
   cursor: pointer;
 }
 
+
 .secondary-button:hover {
   background: #f5f7fb;
 }
+
 
 .text-button,
 .link-button {
   border: none;
 
-  color: var(--blue);
-
   background: transparent;
+
+  color: var(--blue);
 
   cursor: pointer;
 }
+
 
 .text-button:hover,
 .link-button:hover {
@@ -478,12 +672,14 @@ button {
 
 
 /* =========================
-   Section Header
+   Section headers
 ========================= */
 
 .section-header {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 20px;
@@ -491,14 +687,17 @@ button {
   margin-bottom: 14px;
 }
 
+
 .section-header h2 {
   margin: 0;
 
   font-size: 19px;
 }
 
+
 .section-actions {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
@@ -506,17 +705,23 @@ button {
   color: #9aa2af;
 }
 
+
 .section-description {
-  margin: 5px 0 0;
+  margin:
+    5px
+    0
+    15px;
 
   color: var(--muted);
 
   font-size: 14px;
+
+  line-height: 1.6;
 }
 
 
 /* =========================
-   Query Output
+   Query Preview
 ========================= */
 
 .query-preview {
@@ -526,10 +731,12 @@ button {
 
   border-radius: 12px;
 
-  background: var(--code);
+  background:
+    var(--code);
 
   overflow-x: auto;
 }
+
 
 .query-preview code {
   display: block;
@@ -551,22 +758,25 @@ button {
 
 
 /* =========================
-   Editor
+   Query Editor
 ========================= */
 
 .query-editor {
   width: 100%;
+
   min-height: 260px;
 
   padding: 18px;
 
   resize: vertical;
 
+  border:
+    1px solid #cfd7e5;
+
   border-radius: 10px;
 
-  border: 1px solid #cfd7e5;
-
-  background: #101827;
+  background:
+    #101827;
 
   color: white;
 
@@ -579,68 +789,26 @@ button {
   line-height: 1.6;
 }
 
+
 .editor-actions {
   margin-top: 14px;
 }
 
 
 /* =========================
-   Hierarchy
+   Demo description
 ========================= */
 
-.hierarchy-layout {
-  display: grid;
-
-  grid-template-columns:
-    320px 1fr;
-
-  gap: 28px;
-}
-
-.hierarchy-layout > div:first-child {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-.hierarchy-add {
-  margin-top: 10px;
-}
-
-.hierarchy-preview {
-  min-height: 220px;
-
-  padding: 18px;
-
-  border-radius: 12px;
-
-  border: 1px dashed #cbd5e4;
-
-  background: #fafbfe;
-}
-
-.hierarchy-preview h3 {
+.demo-information h2 {
   margin-top: 0;
 }
 
-.hierarchy-node {
-  margin-bottom: 8px;
 
-  padding: 9px 12px;
+.demo-information p {
+  color:
+    #536070;
 
-  border-radius: 7px;
-
-  background: white;
-
-  border: 1px solid #dce4ef;
-}
-
-.hierarchy-child {
-  margin-left: 24px;
-
-  color: #586277;
+  line-height: 1.7;
 }
 
 
@@ -651,6 +819,7 @@ button {
 .hidden {
   display: none !important;
 }
+
 
 footer {
   margin-top: 30px;
@@ -667,37 +836,57 @@ footer {
    Responsive
 ========================= */
 
-@media (max-width: 1000px) {
+@media (
+  max-width: 1050px
+) {
 
   .query-grid {
     grid-template-columns:
-      repeat(2, 1fr);
+      repeat(
+        2,
+        1fr
+      );
   }
 
 }
 
-@media (max-width: 700px) {
+
+@media (
+  max-width: 760px
+) {
 
   .workspace {
     padding:
-      25px 14px 50px;
+      25px
+      14px
+      50px;
   }
+
 
   .topbar {
-    padding: 0 16px;
+    padding:
+      0
+      16px;
   }
+
 
   .query-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
+
 
   .top-controls {
-    flex-direction: column;
+    flex-direction:
+      column;
   }
 
+
   .aggregation-row {
-    align-items: stretch;
+    align-items:
+      stretch;
   }
+
 
   #generateButton {
     width: 100%;
@@ -705,8 +894,28 @@ footer {
     margin-left: 0;
   }
 
-  .hierarchy-layout {
-    grid-template-columns: 1fr;
+
+  .custom-time {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .date-time-group {
+    flex-wrap:
+      wrap;
+  }
+
+
+  .section-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
   }
 
 }
