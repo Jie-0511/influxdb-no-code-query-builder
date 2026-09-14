@@ -104,11 +104,6 @@ const mockData = {
         location: [
           "lab-a",
           "lab-b"
-        ],
-
-        sensor: [
-          "sensor-03",
-          "sensor-04"
         ]
 
       }
@@ -121,7 +116,7 @@ const mockData = {
 
 
 // ==========================================
-// State
+// Application State
 // ==========================================
 
 let queries = [];
@@ -130,7 +125,7 @@ let currentQueryId = 1;
 
 let nextQueryId = 2;
 
-let hierarchyItems = [];
+let hierarchy = [];
 
 
 // ==========================================
@@ -169,15 +164,11 @@ const relativeTime =
 const customTimeFields =
   document.getElementById("customTimeFields");
 
-const startTimeInput =
+const startTime =
   document.getElementById("startTime");
 
-const stopTimeInput =
+const stopTime =
   document.getElementById("stopTime");
-
-
-const validationMessage =
-  document.getElementById("validationMessage");
 
 
 const customModeButton =
@@ -226,117 +217,24 @@ const applyEditorButton =
   document.getElementById("applyEditorButton");
 
 
-// Hierarchy
-
-const hierarchyQueryStatus =
-  document.getElementById(
-    "hierarchyQueryStatus"
-  );
-
 const hierarchyTagKey =
-  document.getElementById(
-    "hierarchyTagKey"
-  );
+  document.getElementById("hierarchyTagKey");
 
 const hierarchyTagValue =
-  document.getElementById(
-    "hierarchyTagValue"
-  );
-
-const addHierarchyButton =
-  document.getElementById(
-    "addHierarchyButton"
-  );
-
-const resetHierarchyButton =
-  document.getElementById(
-    "resetHierarchyButton"
-  );
+  document.getElementById("hierarchyTagValue");
 
 const hierarchyTree =
-  document.getElementById(
-    "hierarchyTree"
-  );
+  document.getElementById("hierarchyTree");
+
+const addHierarchyButton =
+  document.getElementById("addHierarchyButton");
+
+const resetHierarchyButton =
+  document.getElementById("resetHierarchyButton");
 
 
 // ==========================================
-// Flatpickr
-// ==========================================
-
-const startPicker =
-  flatpickr(
-    startTimeInput,
-    {
-
-      enableTime: true,
-
-      time_24hr: true,
-
-      dateFormat:
-        "Y-m-d H:i",
-
-      defaultHour: 9,
-
-      minuteIncrement: 5,
-
-      locale: "default",
-
-      onChange:
-        function (
-          selectedDates,
-          dateStr
-        ) {
-
-          const query =
-            getCurrentQuery();
-
-          query.startTime =
-            dateStr;
-
-        }
-
-    }
-  );
-
-
-const stopPicker =
-  flatpickr(
-    stopTimeInput,
-    {
-
-      enableTime: true,
-
-      time_24hr: true,
-
-      dateFormat:
-        "Y-m-d H:i",
-
-      defaultHour: 17,
-
-      minuteIncrement: 5,
-
-      locale: "default",
-
-      onChange:
-        function (
-          selectedDates,
-          dateStr
-        ) {
-
-          const query =
-            getCurrentQuery();
-
-          query.stopTime =
-            dateStr;
-
-        }
-
-    }
-  );
-
-
-// ==========================================
-// Query Model
+// Query State Helpers
 // ==========================================
 
 function createDefaultQuery(id) {
@@ -393,15 +291,14 @@ function getCurrentQuery() {
 
   return queries.find(
     query =>
-      query.id ===
-      currentQueryId
+      query.id === currentQueryId
   );
 
 }
 
 
 // ==========================================
-// Helpers
+// Populate Select Helpers
 // ==========================================
 
 function setSelectOptions(
@@ -410,39 +307,24 @@ function setSelectOptions(
   selectedValue
 ) {
 
-  select.innerHTML =
-    "";
+  select.innerHTML = "";
 
+  values.forEach(value => {
 
-  values.forEach(
-    value => {
+    const option =
+      document.createElement("option");
 
-      const option =
-        document.createElement(
-          "option"
-        );
+    option.value = value;
 
+    option.textContent = value;
 
-      option.value =
-        value;
+    select.appendChild(option);
 
-
-      option.textContent =
-        value;
-
-
-      select.appendChild(
-        option
-      );
-
-    }
-  );
+  });
 
 
   if (
-    values.includes(
-      selectedValue
-    )
+    values.includes(selectedValue)
   ) {
 
     select.value =
@@ -454,7 +336,7 @@ function setSelectOptions(
 
 
 // ==========================================
-// Populate Query Options
+// Dynamic Query Data
 // ==========================================
 
 function populateBuckets() {
@@ -462,12 +344,8 @@ function populateBuckets() {
   const query =
     getCurrentQuery();
 
-
   const buckets =
-    Object.keys(
-      mockData
-    );
-
+    Object.keys(mockData);
 
   setSelectOptions(
     bucketSelect,
@@ -483,14 +361,12 @@ function populateMeasurements() {
   const query =
     getCurrentQuery();
 
-
   const measurements =
     Object.keys(
       mockData[
         query.bucket
       ]
     );
-
 
   if (
     !measurements.includes(
@@ -517,7 +393,6 @@ function populateFields() {
 
   const query =
     getCurrentQuery();
-
 
   const fields =
     mockData[
@@ -562,27 +437,25 @@ function populateTagKeys() {
     ].tags;
 
 
-  const keys =
-    Object.keys(
-      tags
-    );
+  const tagKeys =
+    Object.keys(tags);
 
 
   if (
-    !keys.includes(
+    !tagKeys.includes(
       query.tagKey
     )
   ) {
 
     query.tagKey =
-      keys[0];
+      tagKeys[0];
 
   }
 
 
   setSelectOptions(
     tagKeySelect,
-    keys,
+    tagKeys,
     query.tagKey
   );
 
@@ -595,7 +468,7 @@ function populateTagValues() {
     getCurrentQuery();
 
 
-  const values =
+  const tagValues =
     mockData[
       query.bucket
     ][
@@ -606,20 +479,20 @@ function populateTagValues() {
 
 
   if (
-    !values.includes(
+    !tagValues.includes(
       query.tagValue
     )
   ) {
 
     query.tagValue =
-      values[0];
+      tagValues[0];
 
   }
 
 
   setSelectOptions(
     tagValueSelect,
-    values,
+    tagValues,
     query.tagValue
   );
 
@@ -627,129 +500,109 @@ function populateTagValues() {
 
 
 // ==========================================
-// Query Tabs
+// Render Query Tabs
 // ==========================================
 
 function renderQueryTabs() {
 
-  queryTabs.innerHTML =
-    "";
+  queryTabs.innerHTML = "";
 
 
-  queries.forEach(
-    query => {
+  queries.forEach(query => {
 
-      const tab =
-        document.createElement(
-          "div"
-        );
+    const tab =
+      document.createElement("div");
 
 
-      tab.className =
-        "query-tab";
+    tab.className =
+      "query-tab";
 
 
-      if (
-        query.id ===
-        currentQueryId
-      ) {
+    if (
+      query.id ===
+      currentQueryId
+    ) {
 
-        tab.classList.add(
-          "active"
-        );
+      tab.classList.add(
+        "active"
+      );
+
+    }
+
+
+    const title =
+      document.createElement("span");
+
+    title.textContent =
+      `Query ${query.id}`;
+
+
+    title.addEventListener(
+      "click",
+      () => {
+
+        saveCurrentUIState();
+
+        currentQueryId =
+          query.id;
+
+        render();
 
       }
+    );
 
 
-      const title =
+    tab.appendChild(title);
+
+
+    if (
+      queries.length > 1
+    ) {
+
+      const remove =
         document.createElement(
-          "span"
+          "button"
         );
 
+      remove.className =
+        "query-remove";
 
-      title.textContent =
-        `Query ${query.id}`;
+      remove.textContent =
+        "×";
 
 
-      title.addEventListener(
+      remove.addEventListener(
         "click",
-        () => {
+        event => {
 
-          saveCurrentUIState();
+          event.stopPropagation();
 
-          currentQueryId =
-            query.id;
-
-          clearValidation();
-
-          render();
+          removeQuery(
+            query.id
+          );
 
         }
       );
 
 
       tab.appendChild(
-        title
-      );
-
-
-      if (
-        queries.length > 1
-      ) {
-
-        const removeButton =
-          document.createElement(
-            "button"
-          );
-
-
-        removeButton.className =
-          "query-remove";
-
-
-        removeButton.textContent =
-          "×";
-
-
-        removeButton.setAttribute(
-          "aria-label",
-          `Remove Query ${query.id}`
-        );
-
-
-        removeButton.addEventListener(
-          "click",
-          event => {
-
-            event.stopPropagation();
-
-            removeQuery(
-              query.id
-            );
-
-          }
-        );
-
-
-        tab.appendChild(
-          removeButton
-        );
-
-      }
-
-
-      queryTabs.appendChild(
-        tab
+        remove
       );
 
     }
-  );
+
+
+    queryTabs.appendChild(
+      tab
+    );
+
+  });
 
 }
 
 
 // ==========================================
-// Add Query
+// Add / Remove Query
 // ==========================================
 
 function addQuery() {
@@ -757,14 +610,14 @@ function addQuery() {
   saveCurrentUIState();
 
 
-  const query =
+  const newQuery =
     createDefaultQuery(
       nextQueryId
     );
 
 
   queries.push(
-    query
+    newQuery
   );
 
 
@@ -775,21 +628,15 @@ function addQuery() {
   nextQueryId++;
 
 
-  clearValidation();
-
   render();
 
 }
 
 
-// ==========================================
-// Remove Query
-// ==========================================
-
 function removeQuery(id) {
 
   if (
-    queries.length <= 1
+    queries.length === 1
   ) {
 
     return;
@@ -815,22 +662,20 @@ function removeQuery(id) {
     currentQueryId === id
   ) {
 
-    const fallbackIndex =
-      Math.max(
-        0,
-        index - 1
-      );
+    const fallback =
+      queries[
+        Math.max(
+          0,
+          index - 1
+        )
+      ];
 
 
     currentQueryId =
-      queries[
-        fallbackIndex
-      ].id;
+      fallback.id;
 
   }
 
-
-  clearValidation();
 
   render();
 
@@ -838,7 +683,7 @@ function removeQuery(id) {
 
 
 // ==========================================
-// Save Current UI
+// Save Current UI State
 // ==========================================
 
 function saveCurrentUIState() {
@@ -857,18 +702,14 @@ function saveCurrentUIState() {
   query.bucket =
     bucketSelect.value;
 
-
   query.measurement =
     measurementSelect.value;
-
 
   query.field =
     fieldSelect.value;
 
-
   query.tagKey =
     tagKeySelect.value;
-
 
   query.tagValue =
     tagValueSelect.value;
@@ -877,22 +718,18 @@ function saveCurrentUIState() {
   query.timeMode =
     timeMode.value;
 
-
   query.relativeTime =
     relativeTime.value;
 
-
   query.startTime =
-    startTimeInput.value;
-
+    startTime.value;
 
   query.stopTime =
-    stopTimeInput.value;
+    stopTime.value;
 
 
   query.aggregationFunction =
     aggregationFunction.value;
-
 
   query.aggregationInterval =
     aggregationInterval.value;
@@ -901,7 +738,7 @@ function saveCurrentUIState() {
 
 
 // ==========================================
-// Render
+// Render Current Query
 // ==========================================
 
 function render() {
@@ -932,40 +769,11 @@ function render() {
     query.relativeTime;
 
 
-  if (
-    query.startTime
-  ) {
+  startTime.value =
+    query.startTime;
 
-    startPicker.setDate(
-      query.startTime,
-      false
-    );
-
-  }
-
-  else {
-
-    startPicker.clear();
-
-  }
-
-
-  if (
-    query.stopTime
-  ) {
-
-    stopPicker.setDate(
-      query.stopTime,
-      false
-    );
-
-  }
-
-  else {
-
-    stopPicker.clear();
-
-  }
+  stopTime.value =
+    query.stopTime;
 
 
   if (
@@ -973,16 +781,15 @@ function render() {
     "custom"
   ) {
 
-    relativeTime
-      .classList
-      .add(
-        "hidden"
-      );
-
-
     customTimeFields
       .classList
       .remove(
+        "hidden"
+      );
+
+    relativeTime
+      .classList
+      .add(
         "hidden"
       );
 
@@ -990,16 +797,15 @@ function render() {
 
   else {
 
-    relativeTime
-      .classList
-      .remove(
-        "hidden"
-      );
-
-
     customTimeFields
       .classList
       .add(
+        "hidden"
+      );
+
+    relativeTime
+      .classList
+      .remove(
         "hidden"
       );
 
@@ -1025,7 +831,7 @@ function render() {
     'Select query options and click "Generate Current Query".';
 
 
-  updateHierarchyIntegration();
+  updateHierarchySelectors();
 
 }
 
@@ -1071,7 +877,9 @@ function setAggregationMode(
     );
 
 
-  if (save) {
+  if (
+    save
+  ) {
 
     saveCurrentUIState();
 
@@ -1081,129 +889,10 @@ function setAggregationMode(
 
 
 // ==========================================
-// Validation
-// ==========================================
-
-function showValidation(message) {
-
-  validationMessage
-    .textContent =
-    message;
-
-
-  validationMessage
-    .classList
-    .remove(
-      "hidden"
-    );
-
-}
-
-
-function clearValidation() {
-
-  validationMessage
-    .textContent =
-    "";
-
-
-  validationMessage
-    .classList
-    .add(
-      "hidden"
-    );
-
-}
-
-
-// ==========================================
-// Local Date Parser
-// ==========================================
-
-function parseFlatpickrDate(
-  value
-) {
-
-  if (!value) {
-
-    return null;
-
-  }
-
-
-  const match =
-    value.match(
-      /^(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2})$/
-    );
-
-
-  if (!match) {
-
-    return null;
-
-  }
-
-
-  const year =
-    Number(
-      match[1]
-    );
-
-  const month =
-    Number(
-      match[2]
-    ) - 1;
-
-  const day =
-    Number(
-      match[3]
-    );
-
-  const hour =
-    Number(
-      match[4]
-    );
-
-  const minute =
-    Number(
-      match[5]
-    );
-
-
-  const date =
-    new Date(
-      year,
-      month,
-      day,
-      hour,
-      minute,
-      0
-    );
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return null;
-
-  }
-
-
-  return date;
-
-}
-
-
-// ==========================================
-// Flux Generation
+// Flux Query Generation
 // ==========================================
 
 function buildFluxQuery() {
-
-  clearValidation();
 
   saveCurrentUIState();
 
@@ -1217,51 +906,13 @@ function buildFluxQuery() {
 
   if (
     query.timeMode ===
-    "custom"
+    "custom" &&
+    query.startTime &&
+    query.stopTime
   ) {
 
-    const startDate =
-      parseFlatpickrDate(
-        query.startTime
-      );
-
-
-    const stopDate =
-      parseFlatpickrDate(
-        query.stopTime
-      );
-
-
-    if (
-      !startDate ||
-      !stopDate
-    ) {
-
-      showValidation(
-        "Please select both the start and end date/time."
-      );
-
-      return null;
-
-    }
-
-
-    if (
-      startDate >=
-      stopDate
-    ) {
-
-      showValidation(
-        "The start date/time must be earlier than the end date/time."
-      );
-
-      return null;
-
-    }
-
-
     rangeClause =
-      `|> range(start: time(v: "${startDate.toISOString()}"), stop: time(v: "${stopDate.toISOString()}"))`;
+      `|> range(start: time(v: "${new Date(query.startTime).toISOString()}"), stop: time(v: "${new Date(query.stopTime).toISOString()}"))`;
 
   }
 
@@ -1311,9 +962,6 @@ function buildFluxQuery() {
     flux;
 
 
-  updateHierarchyIntegration();
-
-
   return flux;
 
 }
@@ -1325,7 +973,7 @@ function buildFluxQuery() {
 
 async function copyQuery() {
 
-  let query =
+  const query =
     getCurrentQuery();
 
 
@@ -1333,30 +981,17 @@ async function copyQuery() {
     !query.generatedQuery
   ) {
 
-    const generated =
-      buildFluxQuery();
-
-
-    if (!generated) {
-
-      return;
-
-    }
-
-
-    query =
-      getCurrentQuery();
+    buildFluxQuery();
 
   }
 
 
   try {
 
-    await navigator
-      .clipboard
-      .writeText(
-        query.generatedQuery
-      );
+    await navigator.clipboard.writeText(
+      getCurrentQuery()
+        .generatedQuery
+    );
 
 
     copyButton.textContent =
@@ -1391,7 +1026,7 @@ async function copyQuery() {
 
 function openEditor() {
 
-  let query =
+  const query =
     getCurrentQuery();
 
 
@@ -1399,25 +1034,14 @@ function openEditor() {
     !query.generatedQuery
   ) {
 
-    const generated =
-      buildFluxQuery();
-
-
-    if (!generated) {
-
-      return;
-
-    }
-
-
-    query =
-      getCurrentQuery();
+    buildFluxQuery();
 
   }
 
 
   queryEditor.value =
-    query.generatedQuery;
+    getCurrentQuery()
+      .generatedQuery;
 
 
   editorPanel
@@ -1427,11 +1051,9 @@ function openEditor() {
     );
 
 
-  editorPanel
-    .scrollIntoView({
-      behavior:
-        "smooth"
-    });
+  editorPanel.scrollIntoView({
+    behavior: "smooth"
+  });
 
 }
 
@@ -1459,9 +1081,6 @@ function applyEditorChanges() {
 
   queryOutput.textContent =
     query.generatedQuery;
-
-
-  updateHierarchyIntegration();
 
 
   closeEditor();
@@ -1503,8 +1122,7 @@ function exportCSV() {
       new Date(
         Date.now() -
         60000
-      )
-        .toISOString(),
+      ).toISOString(),
 
       "41.9",
 
@@ -1515,8 +1133,7 @@ function exportCSV() {
       new Date(
         Date.now() -
         120000
-      )
-        .toISOString(),
+      ).toISOString(),
 
       "43.1",
 
@@ -1545,12 +1162,6 @@ function exportCSV() {
     );
 
 
-  const url =
-    URL.createObjectURL(
-      blob
-    );
-
-
   const link =
     document.createElement(
       "a"
@@ -1558,110 +1169,45 @@ function exportCSV() {
 
 
   link.href =
-    url;
+    URL.createObjectURL(
+      blob
+    );
 
 
   link.download =
     `query-${query.id}-results.csv`;
 
 
-  document.body
-    .appendChild(
-      link
-    );
-
-
   link.click();
 
 
-  link.remove();
-
-
   URL.revokeObjectURL(
-    url
+    link.href
   );
 
 }
 
 
 // ==========================================
-// Hierarchy Integration
+// User Defined Hierarchy
 // ==========================================
 
-function updateHierarchyIntegration() {
+function updateHierarchySelectors() {
 
   const query =
     getCurrentQuery();
 
 
-  const hasQuery =
-    Boolean(
-      query.generatedQuery
-    );
-
-
-  hierarchyTagKey.disabled =
-    !hasQuery;
-
-
-  hierarchyTagValue.disabled =
-    !hasQuery;
-
-
-  addHierarchyButton.disabled =
-    !hasQuery;
-
-
-  hierarchyQueryStatus
-    .classList
-    .toggle(
-      "active",
-      hasQuery
-    );
-
-
-  if (!hasQuery) {
-
-    hierarchyQueryStatus.textContent =
-      "Generate a Flux query first to enable this integration.";
-
-
-    hierarchyTagKey.innerHTML =
-      "";
-
-
-    hierarchyTagValue.innerHTML =
-      "";
-
-
-    return;
-
-  }
-
-
-  hierarchyQueryStatus.textContent =
-    `Active query: Query ${query.id} — ${query.bucket} / ${query.measurement} / ${query.field}`;
-
-
-  populateHierarchyTagKeys();
-
-}
-
-
-function populateHierarchyTagKeys() {
-
-  const query =
-    getCurrentQuery();
+  const tags =
+    mockData[
+      query.bucket
+    ][
+      query.measurement
+    ].tags;
 
 
   const keys =
-    Object.keys(
-      mockData[
-        query.bucket
-      ][
-        query.measurement
-      ].tags
-    );
+    Object.keys(tags);
 
 
   setSelectOptions(
@@ -1672,19 +1218,15 @@ function populateHierarchyTagKeys() {
   );
 
 
-  populateHierarchyTagValues();
+  updateHierarchyValues();
 
 }
 
 
-function populateHierarchyTagValues() {
+function updateHierarchyValues() {
 
   const query =
     getCurrentQuery();
-
-
-  const key =
-    hierarchyTagKey.value;
 
 
   const values =
@@ -1693,7 +1235,7 @@ function populateHierarchyTagValues() {
     ][
       query.measurement
     ].tags[
-      key
+      hierarchyTagKey.value
     ] || [];
 
 
@@ -1709,23 +1251,7 @@ function populateHierarchyTagValues() {
 
 function addHierarchyItem() {
 
-  const query =
-    getCurrentQuery();
-
-
-  if (
-    !query.generatedQuery
-  ) {
-
-    return;
-
-  }
-
-
   const item = {
-
-    queryId:
-      query.id,
 
     key:
       hierarchyTagKey.value,
@@ -1736,20 +1262,9 @@ function addHierarchyItem() {
   };
 
 
-  hierarchyItems.push(
+  hierarchy.push(
     item
   );
-
-
-  renderHierarchy();
-
-}
-
-
-function resetHierarchy() {
-
-  hierarchyItems =
-    [];
 
 
   renderHierarchy();
@@ -1764,23 +1279,18 @@ function renderHierarchy() {
 
 
   if (
-    hierarchyItems.length === 0
+    hierarchy.length === 0
   ) {
 
     hierarchyTree.innerHTML =
-      `
-      <p class="empty-state">
-        No hierarchy items added yet.
-      </p>
-      `;
-
+      '<p class="section-description">No hierarchy items added yet.</p>';
 
     return;
 
   }
 
 
-  hierarchyItems.forEach(
+  hierarchy.forEach(
     (
       item,
       index
@@ -1797,27 +1307,27 @@ function renderHierarchy() {
 
 
       node.innerHTML =
-        `
-        <div class="hierarchy-node-key">
-          ${index + 1}. ${item.key}
-          <span>
-            (Query ${item.queryId})
-          </span>
-        </div>
-
-        <div class="hierarchy-node-value">
-          ↳ ${item.value}
-        </div>
-        `;
+        `<strong>${index + 1}. ${item.key}</strong>
+         <div class="hierarchy-child">
+           ↳ ${item.value}
+         </div>`;
 
 
-      hierarchyTree
-        .appendChild(
-          node
-        );
+      hierarchyTree.appendChild(
+        node
+      );
 
     }
   );
+
+}
+
+
+function resetHierarchy() {
+
+  hierarchy = [];
+
+  renderHierarchy();
 
 }
 
@@ -1882,10 +1392,6 @@ bucketSelect.addEventListener(
       ][0];
 
 
-    query.generatedQuery =
-      "";
-
-
     render();
 
   }
@@ -1936,10 +1442,6 @@ measurementSelect.addEventListener(
       ][0];
 
 
-    query.generatedQuery =
-      "";
-
-
     render();
 
   }
@@ -1950,23 +1452,9 @@ fieldSelect.addEventListener(
   "change",
   () => {
 
-    const query =
-      getCurrentQuery();
-
-
-    query.field =
+    getCurrentQuery()
+      .field =
       fieldSelect.value;
-
-
-    query.generatedQuery =
-      "";
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
 
   }
 );
@@ -1994,18 +1482,9 @@ tagKeySelect.addEventListener(
       ][0];
 
 
-    query.generatedQuery =
-      "";
-
-
     populateTagValues();
 
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
+    updateHierarchySelectors();
 
   }
 );
@@ -2015,23 +1494,9 @@ tagValueSelect.addEventListener(
   "change",
   () => {
 
-    const query =
-      getCurrentQuery();
-
-
-    query.tagValue =
+    getCurrentQuery()
+      .tagValue =
       tagValueSelect.value;
-
-
-    query.generatedQuery =
-      "";
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
 
   }
 );
@@ -2045,19 +1510,9 @@ timeMode.addEventListener(
   "change",
   () => {
 
-    const query =
-      getCurrentQuery();
-
-
-    query.timeMode =
+    getCurrentQuery()
+      .timeMode =
       timeMode.value;
-
-
-    query.generatedQuery =
-      "";
-
-
-    clearValidation();
 
     render();
 
@@ -2069,131 +1524,9 @@ relativeTime.addEventListener(
   "change",
   () => {
 
-    const query =
-      getCurrentQuery();
-
-
-    query.relativeTime =
+    getCurrentQuery()
+      .relativeTime =
       relativeTime.value;
-
-
-    query.generatedQuery =
-      "";
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
-
-  }
-);
-
-
-// ==========================================
-// Aggregation Events
-// ==========================================
-
-customModeButton.addEventListener(
-  "click",
-  () => {
-
-    const query =
-      getCurrentQuery();
-
-
-    query.generatedQuery =
-      "";
-
-
-    setAggregationMode(
-      "custom"
-    );
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
-
-  }
-);
-
-
-autoModeButton.addEventListener(
-  "click",
-  () => {
-
-    const query =
-      getCurrentQuery();
-
-
-    query.generatedQuery =
-      "";
-
-
-    setAggregationMode(
-      "auto"
-    );
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
-
-  }
-);
-
-
-aggregationFunction.addEventListener(
-  "change",
-  () => {
-
-    const query =
-      getCurrentQuery();
-
-
-    saveCurrentUIState();
-
-
-    query.generatedQuery =
-      "";
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
-
-  }
-);
-
-
-aggregationInterval.addEventListener(
-  "change",
-  () => {
-
-    const query =
-      getCurrentQuery();
-
-
-    saveCurrentUIState();
-
-
-    query.generatedQuery =
-      "";
-
-
-    queryOutput.textContent =
-      'Select query options and click "Generate Current Query".';
-
-
-    updateHierarchyIntegration();
 
   }
 );
@@ -2245,9 +1578,45 @@ applyEditorButton.addEventListener(
 );
 
 
+customModeButton.addEventListener(
+  "click",
+  () => {
+
+    setAggregationMode(
+      "custom"
+    );
+
+  }
+);
+
+
+autoModeButton.addEventListener(
+  "click",
+  () => {
+
+    setAggregationMode(
+      "auto"
+    );
+
+  }
+);
+
+
+aggregationFunction.addEventListener(
+  "change",
+  saveCurrentUIState
+);
+
+
+aggregationInterval.addEventListener(
+  "change",
+  saveCurrentUIState
+);
+
+
 hierarchyTagKey.addEventListener(
   "change",
-  populateHierarchyTagValues
+  updateHierarchyValues
 );
 
 
