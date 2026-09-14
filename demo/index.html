@@ -6,6 +6,12 @@
 
   <title>InfluxDB No-Code Query Builder</title>
 
+  <!-- Flatpickr -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+  />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -13,7 +19,9 @@
 
   <div class="app-shell">
 
-    <!-- Header -->
+    <!-- =========================
+         Header
+    ========================== -->
     <header class="topbar">
 
       <div class="brand">
@@ -31,26 +39,33 @@
 
     <main class="workspace">
 
-      <!-- Demo notice -->
+      <!-- =========================
+           Demo notice
+      ========================== -->
       <section class="demo-notice">
 
         <strong>Demo Mode</strong>
 
         <span>
-          This interactive portfolio version uses mock data and does not connect
-          to the original university InfluxDB or Grafana environment.
+          This interactive portfolio version uses mock data and does not
+          connect to the original university InfluxDB or Grafana environment.
         </span>
 
       </section>
 
 
-      <!-- Query Builder -->
+      <!-- =========================
+           Query Builder
+      ========================== -->
       <section class="panel query-builder-panel">
 
-        <!-- Query tabs -->
+        <!-- Query Tabs -->
         <div class="query-toolbar">
 
-          <div id="queryTabs" class="query-tabs"></div>
+          <div
+            id="queryTabs"
+            class="query-tabs"
+          ></div>
 
           <button
             id="addQueryButton"
@@ -62,7 +77,7 @@
         </div>
 
 
-        <!-- Time controls -->
+        <!-- Time Controls -->
         <div class="top-controls">
 
           <div class="time-controls">
@@ -84,7 +99,6 @@
             </select>
 
 
-            <!-- Relative Time -->
             <select id="relativeTime">
 
               <option value="-15m">
@@ -110,32 +124,22 @@
             </select>
 
 
-            <!-- Custom Time -->
             <div
               id="customTimeFields"
               class="custom-time hidden"
             >
 
-              <div class="date-time-group">
+              <div class="date-time-field">
 
                 <span class="date-label">
                   Start
                 </span>
 
                 <input
-                  id="startDate"
+                  id="startTime"
                   type="text"
-                  placeholder="YYYY-MM-DD"
-                  maxlength="10"
-                  autocomplete="off"
-                />
-
-                <input
-                  id="startClock"
-                  type="text"
-                  placeholder="HH:MM"
-                  maxlength="5"
-                  autocomplete="off"
+                  placeholder="Select start date & time"
+                  readonly
                 />
 
               </div>
@@ -146,26 +150,17 @@
               </span>
 
 
-              <div class="date-time-group">
+              <div class="date-time-field">
 
                 <span class="date-label">
                   End
                 </span>
 
                 <input
-                  id="stopDate"
+                  id="stopTime"
                   type="text"
-                  placeholder="YYYY-MM-DD"
-                  maxlength="10"
-                  autocomplete="off"
-                />
-
-                <input
-                  id="stopClock"
-                  type="text"
-                  placeholder="HH:MM"
-                  maxlength="5"
-                  autocomplete="off"
+                  placeholder="Select end date & time"
+                  readonly
                 />
 
               </div>
@@ -177,7 +172,7 @@
 
           <button
             id="csvButton"
-            class="secondary-button"
+            class="secondary-button csv-button"
           >
             CSV
           </button>
@@ -185,7 +180,6 @@
         </div>
 
 
-        <!-- Validation message -->
         <div
           id="validationMessage"
           class="validation-message hidden"
@@ -195,9 +189,9 @@
         <!-- Aggregation -->
         <div class="aggregation-row">
 
-          <div class="aggregation-title">
+          <span class="aggregation-title">
             AGGREGATE FUNCTION
-          </div>
+          </span>
 
 
           <div class="mode-switch">
@@ -259,6 +253,10 @@
                 1 minute
               </option>
 
+              <option value="4m">
+                4 minutes
+              </option>
+
               <option value="5m" selected>
                 5 minutes
               </option>
@@ -278,7 +276,7 @@
 
           <button
             id="generateButton"
-            class="primary-button"
+            class="primary-button generate-button"
           >
             Generate Current Query
           </button>
@@ -286,7 +284,7 @@
         </div>
 
 
-        <!-- Query selections -->
+        <!-- Query Builder Columns -->
         <div class="query-grid">
 
           <!-- Bucket -->
@@ -373,8 +371,9 @@
       </section>
 
 
-
-      <!-- Generated Query -->
+      <!-- =========================
+           Generated Query
+      ========================== -->
       <section class="panel">
 
         <div class="section-header">
@@ -411,8 +410,9 @@
       </section>
 
 
-
-      <!-- Query Editor -->
+      <!-- =========================
+           Query Editor
+      ========================== -->
       <section
         id="editorPanel"
         class="panel hidden"
@@ -420,9 +420,17 @@
 
         <div class="section-header">
 
-          <h2>
-            Query Editor
-          </h2>
+          <div>
+
+            <h2>
+              Query Editor
+            </h2>
+
+            <p class="section-description">
+              Edit the generated Flux query before applying the changes.
+            </p>
+
+          </div>
 
           <button
             id="closeEditorButton"
@@ -434,11 +442,6 @@
         </div>
 
 
-        <p class="section-description">
-          You can manually edit the generated Flux query for demonstration purposes.
-        </p>
-
-
         <textarea
           id="queryEditor"
           class="query-editor"
@@ -446,21 +449,125 @@
         ></textarea>
 
 
-        <div class="editor-actions">
+        <button
+          id="applyEditorButton"
+          class="primary-button editor-apply"
+        >
+          Apply Changes
+        </button>
 
-          <button
-            id="applyEditorButton"
-            class="primary-button"
-          >
-            Apply Changes
-          </button>
+      </section>
+
+
+      <!-- =========================
+           Related Team Integration
+           User-defined Hierarchy
+      ========================== -->
+      <section class="panel hierarchy-panel">
+
+        <div class="section-header">
+
+          <div>
+
+            <h2>
+              User-defined Hierarchy
+            </h2>
+
+            <p class="section-description">
+              Related team integration that consumes the Flux query
+              generated by the Query Builder.
+            </p>
+
+          </div>
+
+
+          <span class="integration-badge">
+            Related Team Integration
+          </span>
+
+        </div>
+
+
+        <div
+          id="hierarchyQueryStatus"
+          class="hierarchy-status"
+        >
+
+          Generate a Flux query first to enable this integration.
+
+        </div>
+
+
+        <div class="hierarchy-layout">
+
+          <div class="hierarchy-controls">
+
+            <label for="hierarchyTagKey">
+              Tag Key
+            </label>
+
+            <select
+              id="hierarchyTagKey"
+              disabled
+            ></select>
+
+
+            <label for="hierarchyTagValue">
+              Tag Value
+            </label>
+
+            <select
+              id="hierarchyTagValue"
+              disabled
+            ></select>
+
+
+            <button
+              id="addHierarchyButton"
+              class="primary-button"
+              disabled
+            >
+              Add to Hierarchy
+            </button>
+
+
+            <button
+              id="resetHierarchyButton"
+              class="secondary-button"
+            >
+              Reset Hierarchy
+            </button>
+
+          </div>
+
+
+          <div class="hierarchy-preview">
+
+            <h3>
+              Hierarchy Preview
+            </h3>
+
+            <div
+              id="hierarchyTree"
+              class="hierarchy-tree"
+            >
+
+              <p class="empty-state">
+                No hierarchy items added yet.
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
       </section>
 
 
-      <!-- About Demo -->
+      <!-- =========================
+           About
+      ========================== -->
       <section class="panel demo-information">
 
         <h2>
@@ -468,15 +575,23 @@
         </h2>
 
         <p>
-          This lightweight interactive demo was recreated for portfolio purposes
-          based on my contribution to the frontend Query Builder and dynamic Flux
-          Query Generation functionality in a university industry project.
+          This lightweight interactive demo was recreated for portfolio
+          purposes based on my primary contribution to the frontend
+          Query Builder and dynamic Flux Query Generation functionality
+          in a university industry project.
         </p>
 
         <p>
-          It uses sample data so that the interaction can be demonstrated safely
-          without exposing the original internal project environment, credentials,
-          or university infrastructure.
+          The User-defined Hierarchy section is included as a related
+          team integration because it consumes the Flux query produced
+          by the Query Builder. It is not presented as my primary
+          individual contribution.
+        </p>
+
+        <p>
+          Mock data is used so the workflow can be demonstrated safely
+          without exposing the original internal project environment,
+          credentials, or university infrastructure.
         </p>
 
       </section>
@@ -484,7 +599,7 @@
 
       <footer>
 
-        Portfolio demonstration — Query Builder & Flux Query Generation
+        Portfolio Demo — Query Builder & Flux Query Generation
 
       </footer>
 
@@ -492,6 +607,10 @@
 
   </div>
 
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/flatpickr"
+  ></script>
 
   <script src="app.js"></script>
 
